@@ -12,8 +12,9 @@ import site.metacoding.junittest.domain.Book;
 import site.metacoding.junittest.domain.BookRepository;
 import site.metacoding.junittest.util.MailSender;
 
-import site.metacoding.junittest.web.dto.BookRespDto;
-import site.metacoding.junittest.web.dto.BookSaveReqDto;
+import site.metacoding.junittest.web.dto.response.BookListRespDto;
+import site.metacoding.junittest.web.dto.response.BookRespDto;
+import site.metacoding.junittest.web.dto.request.BookSaveReqDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,21 +71,13 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         //when(실행)
-        List<BookRespDto> bookRespDtoList = bookService.책목록보기();
-
-        //print
-        bookRespDtoList.stream().forEach((dto) -> {
-            System.out.println("=============테스트");
-                    System.out.println(dto.getId());
-                    System.out.println(dto.getTitle());
-                }
-        );
+        BookListRespDto bookListRespDto = bookService.책목록보기();
 
         //then(검증)
-        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("강의11");
-        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
-        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("강의22");
-        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("겟인데어");
+        assertThat(bookListRespDto.getItems().get(0).getTitle()).isEqualTo("강의11");
+        assertThat(bookListRespDto.getItems().get(0).getAuthor()).isEqualTo("메타코딩");
+        assertThat(bookListRespDto.getItems().get(1).getTitle()).isEqualTo("강의22");
+        assertThat(bookListRespDto.getItems().get(1).getAuthor()).isEqualTo("겟인데어");
     }
 
     @Test
