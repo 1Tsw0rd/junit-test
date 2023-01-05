@@ -96,11 +96,7 @@ public class BookRepositoryTest {
         assertEquals(author, bookPS.getAuthor());
     }//트랜잭션 종료(저장된 데이터 초기화)
 
-
-    //4. 책 수정
-
-
-    //5. 책 삭제
+    //4. 책 삭제
     @Sql("classpath:db/tableInit.sql")
     @Test
     public void 책삭제_test(){
@@ -118,5 +114,35 @@ public class BookRepositoryTest {
         //assertFalse()는 false 일 때 true
         //isPresent()는 값이 없으면 true 반환(값 있니?)
     }
-    
+
+
+    //5. 책 수정
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void 책수정_test(){
+        //현재 1, junit, 겟인데어
+        //given
+        Long id = 1L;
+        String title = "junit5";
+        String author = "메타코딩";
+        Book book = new Book(id, title, author);
+
+        //when
+        Book bookPS = bookRepository.save(book);
+
+//        bookRepository.findAll().stream()
+//                .forEach(b -> {
+//                    System.out.println("id : " + b.getId() + "  title : " + b.getTitle() + " author : " + b.getAuthor());
+//                    System.out.println("========================");
+//                }
+//        );
+//        System.out.println("id : " + bookPS.getId() + "  title : " + bookPS.getTitle() + " author : " + bookPS.getAuthor());
+//        System.out.println("========================");
+
+        //then
+        assertEquals(id, bookPS.getId());
+        assertEquals(title, bookPS.getTitle());
+        assertEquals(author, bookPS.getAuthor());
+    }
+
 }
