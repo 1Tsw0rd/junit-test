@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.test.context.ActiveProfiles;
 import site.metacoding.junittest.domain.Book;
 import site.metacoding.junittest.domain.BookRepository;
 import site.metacoding.junittest.util.MailSender;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class) //가짜 메모리 환경 만들어짐
 public class BookServiceTest {
     @InjectMocks //아래 Mock 객체들 갖다 쓰게 됨(의존성 생김).. 주입하라 mock들을..
