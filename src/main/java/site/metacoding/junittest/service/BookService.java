@@ -29,21 +29,33 @@ public class BookService {
                 throw new RuntimeException("메일이 전송되지 않았습니다.");
             }
         }
-        return new BookRespDto().toDto(bookPS);
+        return bookPS.toDto();
     }
 
     //2. 책목록보기
     public List<BookRespDto> 책목록보기(){
-        return bookRepository.findAll().stream()
-                .map(new BookRespDto()::toDto)
+        //본코드에 문제 있나?
+       List<BookRespDto> dtos = bookRepository.findAll().stream()
+                .map(Book::toDto)
                 .collect(Collectors.toList());
+
+        //print
+        dtos.stream().forEach((dto) -> {
+            System.out.println("============본코드");
+                    System.out.println(dto.getId());
+                    System.out.println(dto.getTitle());
+
+                }
+        );
+
+        return dtos;
     }
 
     //3. 책 한건 보기
     public BookRespDto 책한건보기(Long id){
         Optional<Book> bookOP = bookRepository.findById(id);
         if (bookOP.isPresent()){ //찾았다면 실행
-            return new BookRespDto().toDto(bookOP.get());
+            return bookOP.get().toDto();
         } else {
             throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
         }
@@ -59,11 +71,12 @@ public class BookService {
     
     //5. 책수정
     @Transactional(rollbackOn = RuntimeException.class)
-    public void 책수정하기(Long id, BookSaveReqDto dto){
+    public BookRespDto 책수정하기(Long id, BookSaveReqDto dto){
         Optional<Book> bookOP = bookRepository.findById(id);
         if (bookOP.isPresent()){ //값이 있다면
             Book bookPS = bookOP.get();
             bookPS.update(dto.getTitle(), dto.getAuthor());
+            return bookPS.toDto();
         } else {
             throw new RuntimeException("해당 책을 찾을 수 없습니다.");
         }
